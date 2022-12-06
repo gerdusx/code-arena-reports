@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../../utils/connection";
 import { ResponseFuncs } from "../../../utils/types";
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const method: keyof ResponseFuncs = req.method as keyof ResponseFuncs;
@@ -9,6 +11,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const handleCase: ResponseFuncs = {
         GET: async (req: NextApiRequest, res: NextApiResponse) => {
+			const session = await unstable_getServerSession(req, res, authOptions);
+			console.log("session", session);
+			
             const { Finding } = await connect(); // connect to database
             res.json(await Finding.find({}).catch(catcher));
         },

@@ -5,7 +5,6 @@ export const LoginButton = () => {
     if (session) {
         return (
             <>
-                Signed in as {session.user?.email} <br />
                 <button onClick={() => signOut()}>Sign out</button>
             </>
         );
