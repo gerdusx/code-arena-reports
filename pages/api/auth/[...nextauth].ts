@@ -25,7 +25,6 @@ export const authOptions: NextAuthOptions = {
 			console.log("profile", profile);
 			console.log("email", email);
             console.log("credentials", credentials);
-			
  			return true;
         },
     },

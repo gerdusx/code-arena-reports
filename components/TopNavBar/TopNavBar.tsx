@@ -13,6 +13,7 @@ export const TopNavBar = () => {
             <NavLink className="">About</NavLink>
             <div className="grow"></div>
             {session && <UserInfo session={session} />}
+            {session && <NavLink className="">Add Finding</NavLink>}
             <NavLink className="">
                 <LoginButton />
             </NavLink>
