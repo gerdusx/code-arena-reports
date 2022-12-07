@@ -3,6 +3,11 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import clientPromise from "../../../utils/mongodb";
 
+export enum UserRole {
+    Admin = "Admin",
+    User = "User"
+}
+
 export const authOptions: NextAuthOptions = {
     adapter: MongoDBAdapter(clientPromise),
     providers: [
@@ -20,12 +25,12 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-			console.log("user", user);
-			console.log("account", account);
-			console.log("profile", profile);
-			console.log("email", email);
-            console.log("credentials", credentials);
- 			return true;
+            (user as any).role = UserRole.User;
+            return true;
+        },
+        async session({ session, token, user }) {
+            (session?.user as any).role = (user as any).role;
+            return session;
         },
     },
 };
