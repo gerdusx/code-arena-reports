@@ -10,6 +10,7 @@ export const TopNavBar = () => {
     return (
         <div className="flex flex-row text-lg bg-blue-600 text-white">
             <NavLink className="">Home</NavLink>
+            <NavLink className="">Activity</NavLink>
             <NavLink className="">About</NavLink>
             <div className="grow"></div>
             {session && <UserInfo session={session} />}

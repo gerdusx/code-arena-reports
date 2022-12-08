@@ -1,6 +1,6 @@
-export interface Findings {
+export interface IFinding {
     _id?: string;
-    type: string;
+    type?: string;
     name: string;
-    published: boolean;
+    published?: boolean;
 }
