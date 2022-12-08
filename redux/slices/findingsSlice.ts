@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IFinding } from "../../interfaces/IFinding";
 
 export enum FindingMode {
-    None,
+    View,
     Add,
     Edit
 }
 
 type InitialState = {
     mode?: FindingMode;
+    selectedFinding?: IFinding;
 };
 const initialState: InitialState = {
-    mode: FindingMode.None,
+    mode: FindingMode.View,
 };
 
 const findingsSlice = createSlice({

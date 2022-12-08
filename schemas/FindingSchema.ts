@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const FindingSchema = new mongoose.Schema({
     type: String,
     name: String,
+    description: String,
     published: Boolean,
 });
 

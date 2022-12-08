@@ -7,11 +7,11 @@ import remarkGfm from "remark-gfm";
 import { TextArea } from "../../FormControls/TextArea";
 import { Label } from "../../FormControls/Label";
 
-interface IReportFindingProps {
+interface IAddUpdateReportFindingProps {
     onFindingChanged: () => void;
 }
 
-export const AddUpdateReportFinding = ({ onFindingChanged }: IReportFindingProps) => {
+export const AddUpdateReportFinding = ({ onFindingChanged }: IAddUpdateReportFindingProps) => {
     const [createFinding, setCreateFinding] = React.useState<CreateFindingRequest>({ name: "", description: "" });
 
     const onSave = async () => {

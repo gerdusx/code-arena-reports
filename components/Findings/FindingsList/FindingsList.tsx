@@ -1,5 +1,6 @@
 import { IFinding } from "../../../interfaces/IFinding";
 import { FindingsListItem } from "./FindingsListItem";
+import { FindingsListSearch } from "./FindingsListSearch";
 
 interface IFindingsList {
     findings: IFinding[];
@@ -7,16 +8,21 @@ interface IFindingsList {
 
 export const FindingsList = ({ findings }: IFindingsList) => {
     return (
-        <div className="">
-            {findings?.length > 0 &&
-                findings.map((finding, index) => {
-                    return (
-                        <div key={index}>
-                            <FindingsListItem finding={finding}/>
-                        </div>
-                    );
-                })}
-            {findings?.length === 0 && <div>No results</div>}
+        <div className="flex flex-col h-[100%]">
+            <div>
+                <FindingsListSearch />
+            </div>
+            <div className="overflow-scroll overflow-x-hidden">
+                {findings?.length > 0 &&
+                    findings.map((finding, index) => {
+                        return (
+                            <div key={index}>
+                                <FindingsListItem finding={finding} />
+                            </div>
+                        );
+                    })}
+                {findings?.length === 0 && <div>No results</div>}
+            </div>
         </div>
     );
 };
