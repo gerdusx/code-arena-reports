@@ -12,7 +12,7 @@ export const FindingsList = ({ findings }: IFindingsList) => {
             <div>
                 <FindingsListSearch />
             </div>
-            <div className="overflow-scroll overflow-x-hidden">
+            <div className="overflow-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-blue-100 scrollbar-track-gray-100 pr-2">
                 {findings?.length > 0 &&
                     findings.map((finding, index) => {
                         return (
