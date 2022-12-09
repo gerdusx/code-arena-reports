@@ -9,9 +9,18 @@ export const TopNavBar = () => {
 
     return (
         <div className="flex flex-row text-lg bg-blue-600 text-white">
-            <NavLink className="">Home</NavLink>
-            <NavLink className="">Activity</NavLink>
-            <NavLink className="">About</NavLink>
+            <NavLink className="" route="/">
+                Home
+            </NavLink>
+            <NavLink className="" route="/activity">
+                Activity
+            </NavLink>
+            <NavLink className="" route="/about">
+                About
+            </NavLink>
+            <NavLink className="" route="/contests">
+                Contests
+            </NavLink>
             <div className="grow"></div>
             {session && <UserInfo session={session} />}
             {session && <NavLink className="">Add Finding</NavLink>}
