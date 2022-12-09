@@ -7,9 +7,10 @@ import { Label } from "../../FormControls/Label";
 
 interface IAddUpdateReportFindingProps {
     onFindingChanged: () => void;
+    onCancel: () => void;
 }
 
-export const AddUpdateReportFinding = ({ onFindingChanged }: IAddUpdateReportFindingProps) => {
+export const AddUpdateReportFinding = ({ onFindingChanged, onCancel }: IAddUpdateReportFindingProps) => {
     const [createFinding, setCreateFinding] = React.useState<CreateFindingRequest>({ name: "", description: "" });
 
     const onSave = async () => {
@@ -29,6 +30,7 @@ export const AddUpdateReportFinding = ({ onFindingChanged }: IAddUpdateReportFin
             </div>
             <div className="mb-2">
                 <Button text="Save" clicked={() => onSave()} />
+                <Button text="Cancel" clicked={() => onCancel()} />
             </div>
         </div>
     );
