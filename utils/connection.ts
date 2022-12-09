@@ -1,5 +1,6 @@
 //IMPORT MONGOOSE
 import mongoose from "mongoose";
+import { Contest } from "../schemas/ContestSchema";
 import { Finding } from "../schemas/FindingSchema";
 
 const { DATABASE_URL } = process.env;
@@ -9,5 +10,5 @@ export const connect = async () => {
     const conn = await mongoose.connect(DATABASE_URL as string).catch((err) => console.log(err));
     console.log("Mongoose Connection Established");
 
-    return { conn, Finding };
+    return { conn, Finding, Contest };
 };
