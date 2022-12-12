@@ -18,13 +18,14 @@ enum MarkdownSectionType {
 
 interface MarkdownSection {
     content: string;
-    section: MarkdownSectionType;
+    type: string;
 }
 
 export const MarkdownViewer = ({ markdown }: IMarkdownViewerProps) => {
     console.log("markdown", markdown);
 
     const [markdownLines, setMarkdownLines] = React.useState<string[]>([]);
+    const [markdownSections, setMarkdownSections] = React.useState<MarkdownSection[]>([]);
 
     React.useEffect(() => {
         if (markdown) {
@@ -33,9 +34,34 @@ export const MarkdownViewer = ({ markdown }: IMarkdownViewerProps) => {
     }, [markdown]);
 
     React.useEffect(() => {
-        console.log("markdownLines", markdownLines);
+        const sections: MarkdownSection[] = [];
+        markdownLines.forEach((line) => {
+            if (line) {
+                const sectionType = line.split(' ')[0];
+                const section: MarkdownSection = {
+                    content: line.split(" ").splice(1).join(" "),
+                    type: sectionType,
+                };
+
+                sections.push(section);
+            }
+        });
+
+        console.log("sections", sections);
+        
+        setMarkdownSections(sections);
         
     }, [markdownLines]);
 
-    return <div className="flex flex-col">{markdown}</div>;
+    return <div className="flex flex-col">{markdownSections.map((section, index) => {
+
+
+        return (
+            <div key={index}>
+                {section.type === MarkdownSectionType.Heading1 && <div className="text-3xl">{section.content}</div>}
+                {section.type === MarkdownSectionType.Heading2 && <div className="text-2xl">{section.content}</div>}
+                {section.type === MarkdownSectionType.Heading3 && <div className="text-xl">{section.content}</div>}
+            </div>
+        );
+    })}</div>;
 };
