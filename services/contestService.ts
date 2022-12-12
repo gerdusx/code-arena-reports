@@ -4,6 +4,14 @@ import { IFinding } from "../interfaces/IFinding";
 
 export interface CreateContestRequest {
     name?: string;
+    description?: string;
+    contest?: CreateContestRequest_Contest;
+    type: string;
+}
+
+export interface CreateContestRequest_Contest {
+    Id?: string;
+    description?: string;
 }
 
 export const getContests = async (): Promise<IContest[]> => {

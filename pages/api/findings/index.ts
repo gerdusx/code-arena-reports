@@ -12,7 +12,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const handleCase: ResponseFuncs = {
         GET: async (req: NextApiRequest, res: NextApiResponse) => {
 			const session = await unstable_getServerSession(req, res, authOptions);
-			console.log("session", session);
 			
             const { Finding } = await connect(); // connect to database
             res.json(await Finding.find({}).catch(catcher));

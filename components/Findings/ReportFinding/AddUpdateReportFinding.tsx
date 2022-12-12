@@ -23,7 +23,12 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel }: IAddUpdat
 
     const [contests, setContests] = React.useState<IContest[]>([]);
     const [contestsItems, setContestsItems] = React.useState<SelectItem[]>([]);
+    const [typesItems] = React.useState<SelectItem[]>([
+        { value: "High", display: "High" },
+        { value: "Medium", display: "Medium" },
+    ]);
 
+    const [selectedType, setSelectedType] = React.useState("");
     const [selectedContestId, setSelectedContestId] = React.useState("");
 
     React.useEffect(() => {
@@ -32,14 +37,16 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel }: IAddUpdat
 
     React.useEffect(() => {
         if (contests.length > 0) {
-            setContestsItems(contests.map(contest => {
-                const selectItem: SelectItem = {
-                    value: contest._id!,
-                    display: contest.name
-                }
+            setContestsItems(
+                contests.map((contest) => {
+                    const selectItem: SelectItem = {
+                        value: contest._id!,
+                        display: contest.name,
+                    };
 
-                return selectItem;
-            }));
+                    return selectItem;
+                })
+            );
         }
     }, [contests]);
 
@@ -54,13 +61,33 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel }: IAddUpdat
 
     const onContestChanged = (contestId: string) => {
         setSelectedContestId(contestId);
-    }
+        const selectedContest = contests.find((x) => x._id?.toString() === contestId.toString());
+
+        if (selectedContest) {
+            setCreateFinding({ 
+                ...createFinding, 
+                contest: {
+                    data: selectedContest._id,
+                    name: selectedContest.name
+                }
+            })
+        }
+    };
+
+    const onTypeChanged = (type: string) => {
+        setSelectedType(type);
+        setCreateFinding({ ...createFinding, type });
+    };
 
     return (
         <div className="p-4">
             <div className="mb-4">
                 <Label text="Name" />
                 <Input placeHolder="name" value={createFinding.name || ""} changed={(newValue) => setCreateFinding({ ...createFinding, name: newValue })} />
+            </div>
+            <div className="mb-4">
+                <Label text="Type" />
+                <Select items={typesItems} selectedValue={selectedType} onSelectChange={onTypeChanged} />
             </div>
             <div className="mb-4">
                 <Label text="Contest" />

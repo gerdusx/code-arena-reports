@@ -1,9 +1,11 @@
 import axios from "axios";
-import { IFinding } from "../interfaces/IFinding";
+import { IFinding, IFinding_Contest } from "../interfaces/IFinding";
 
 export interface CreateFindingRequest {
     name?: string;
     description?: string;
+    type?: string;
+    contest?: IFinding_Contest;
 }
 
 export const getFindings = async (): Promise<IFinding[]> => {
