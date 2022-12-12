@@ -3,15 +3,13 @@ import { FindingsList } from "../components/Findings/FindingsList/FindingsList";
 import { AddUpdateReportFinding } from "../components/Findings/ReportFinding/AddUpdateReportFinding";
 import { ReportFinding } from "../components/Findings/ReportFinding/ReportFinding";
 import { IFinding } from "../interfaces/IFinding";
-import { useAppSelector } from "../redux/hooks";
 import { FindingMode } from "../redux/slices/findingsSlice";
 import { getFindings } from "../services/findingService";
 
 export default function Home() {
-    //const mode = useAppSelector((state) => state.findings.mode);
-
     const [findingMode, setFindingMode] = React.useState<FindingMode>(FindingMode.View);
     const [findings, setFindings] = React.useState<IFinding[]>([]);
+    
     const [selectedFinding, setSelectedFinding] = React.useState<IFinding>();
 
     React.useEffect(() => {
