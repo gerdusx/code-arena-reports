@@ -1,7 +1,10 @@
 import React from "react";
 import { IFinding } from "../../../interfaces/IFinding";
-import findingsSlice from "../../../redux/slices/findingsSlice";
 import { MarkdownViewer } from "./MarkdownViewer";
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import SyntaxHighlighter from "react-syntax-highlighter";
+
 interface IReportFindingProps {
     finding: IFinding;
     onEditClicked: () => void;
@@ -9,6 +12,7 @@ interface IReportFindingProps {
 
 export const ReportFinding = ({ finding, onEditClicked }: IReportFindingProps) => {
     console.log("finding", finding);
+    const codeString = "(num) => num + 1\ndsfsdfsd";
 
     return (
         <div className="flex flex-col">
@@ -27,6 +31,9 @@ export const ReportFinding = ({ finding, onEditClicked }: IReportFindingProps) =
                 <div>Description</div>
                 <div className="">
                     <MarkdownViewer markdown={finding.description} />
+                    <SyntaxHighlighter language="javascript" style={dracula}>
+                        {codeString}
+                    </SyntaxHighlighter>
                 </div>
             </div>
         </div>
