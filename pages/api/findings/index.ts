@@ -11,8 +11,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const handleCase: ResponseFuncs = {
         GET: async (req: NextApiRequest, res: NextApiResponse) => {
-			const session = await unstable_getServerSession(req, res, authOptions);
-			
+            const session = await unstable_getServerSession(req, res, authOptions);
+
             const { Finding } = await connect(); // connect to database
             res.json(await Finding.find({}).catch(catcher));
         },
@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         POST: async (req: NextApiRequest, res: NextApiResponse) => {
             const { Finding } = await connect(); // connect to database
             res.json(await Finding.create(req.body).catch(catcher));
-        },
+        }
     };
 
     // Check if there is a response for the particular method, if so invoke it, if not response with an error

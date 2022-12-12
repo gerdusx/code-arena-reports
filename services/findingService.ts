@@ -15,3 +15,7 @@ export const getFindings = async (): Promise<IFinding[]> => {
 export const addFinding = async (findingRequest: CreateFindingRequest): Promise<IFinding> => {
     return (await axios.post(`/api/findings`, findingRequest)).data;
 };
+
+export const updateFinding = async (id: string, findingRequest: CreateFindingRequest): Promise<IFinding> => {
+    return (await axios.put(`/api/findings/${id}`, findingRequest)).data;
+};

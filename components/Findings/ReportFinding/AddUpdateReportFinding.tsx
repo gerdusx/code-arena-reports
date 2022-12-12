@@ -1,4 +1,4 @@
-import { addFinding, CreateFindingRequest } from "../../../services/findingService";
+import { addFinding, CreateFindingRequest, updateFinding } from "../../../services/findingService";
 import { Button } from "../../FormControls/Button";
 import { Input } from "../../FormControls/Input";
 import React from "react";
@@ -7,8 +7,10 @@ import { Label } from "../../FormControls/Label";
 import { Select, SelectItem } from "../../FormControls/Select";
 import { getContests } from "../../../services/contestService";
 import { IContest } from "../../../interfaces/IContest";
+import { IFinding } from "../../../interfaces/IFinding";
 
 interface IAddUpdateReportFindingProps {
+    selectedFinding?: IFinding;
     onFindingChanged: () => void;
     onCancel: () => void;
 }
@@ -18,7 +20,7 @@ export enum FindingType {
     Medium = "Medium",
 }
 
-export const AddUpdateReportFinding = ({ onFindingChanged, onCancel }: IAddUpdateReportFindingProps) => {
+export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFinding }: IAddUpdateReportFindingProps) => {
     const [createFinding, setCreateFinding] = React.useState<CreateFindingRequest>({ name: "", description: "" });
 
     const [contests, setContests] = React.useState<IContest[]>([]);
@@ -34,6 +36,20 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel }: IAddUpdat
     React.useEffect(() => {
         getAllContests();
     }, []);
+
+    React.useEffect(() => {
+        if (selectedFinding) {
+            setCreateFinding({
+                name: selectedFinding.name,
+                description: selectedFinding.description,
+                type: selectedFinding.type,
+                contest: selectedFinding.contest,
+            });
+
+            setSelectedType(selectedFinding?.type || "");
+            setSelectedContestId(selectedFinding.contest?.data || "");
+        }
+    }, [selectedFinding]);
 
     React.useEffect(() => {
         if (contests.length > 0) {
@@ -55,7 +71,13 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel }: IAddUpdat
     };
 
     const onSave = async () => {
-        await addFinding(createFinding);
+        if (selectedFinding) {
+            await updateFinding(selectedFinding._id!, createFinding);
+            
+        } else {
+            await addFinding(createFinding);
+        }
+
         onFindingChanged();
     };
 
@@ -64,13 +86,13 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel }: IAddUpdat
         const selectedContest = contests.find((x) => x._id?.toString() === contestId.toString());
 
         if (selectedContest) {
-            setCreateFinding({ 
-                ...createFinding, 
+            setCreateFinding({
+                ...createFinding,
                 contest: {
                     data: selectedContest._id,
-                    name: selectedContest.name
-                }
-            })
+                    name: selectedContest.name,
+                },
+            });
         }
     };
 

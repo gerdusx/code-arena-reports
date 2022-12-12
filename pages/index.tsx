@@ -9,12 +9,18 @@ import { getFindings } from "../services/findingService";
 export default function Home() {
     const [findingMode, setFindingMode] = React.useState<FindingMode>(FindingMode.View);
     const [findings, setFindings] = React.useState<IFinding[]>([]);
-    
+
     const [selectedFinding, setSelectedFinding] = React.useState<IFinding>();
 
     React.useEffect(() => {
         getFilteredFindings();
     }, []);
+
+    React.useEffect(() => {
+        if (selectedFinding) {
+            setSelectedFinding(findings.find((x) => x._id?.toString() === selectedFinding._id?.toString()));
+        }
+    }, [findings, selectedFinding]);
 
     const getFilteredFindings = async () => {
         setFindings(await getFindings());
@@ -42,7 +48,14 @@ export default function Home() {
                 />
             </div>
             <div className="w-full shadow-md">
-                {findingMode === FindingMode.View && selectedFinding && <ReportFinding finding={selectedFinding} />}
+                {findingMode === FindingMode.View && selectedFinding && (
+                    <ReportFinding
+                        finding={selectedFinding}
+                        onEditClicked={() => {
+                            setFindingMode(FindingMode.Edit);
+                        }}
+                    />
+                )}
                 {(findingMode === FindingMode.Add || findingMode === FindingMode.Edit) && (
                     <AddUpdateReportFinding
                         onFindingChanged={() => {
@@ -52,6 +65,7 @@ export default function Home() {
                         onCancel={() => {
                             setFindingMode(FindingMode.View);
                         }}
+                        selectedFinding={selectedFinding}
                     />
                 )}
             </div>
