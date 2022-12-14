@@ -21,4 +21,5 @@ export interface IDescriptionSection {
     sectionType: string;
     content: string;
     href?: string;
+    judge?: string;
 }

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import React from "react";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { IDescriptionSection, IFinding } from "../../../interfaces/IFinding";
 import findingsSlice from "../../../redux/slices/findingsSlice";
 import { MarkdownSectionType } from "./AddMarkdownSection";
@@ -35,7 +37,7 @@ export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMark
                     return (
                         <div key={index} className={`flex flex-row ${inEditMode && editModeCSS} ${selectedSection?._id?.toString() === section._id?.toString() && selectedSectionCSS}`}>
                             {section.sectionType === MarkdownSectionType.Paragraph && (
-                                <div className={`grow mb-4 mt-4`} onClick={() => sectionSelected(section)}>
+                                <div className={`grow mb-2 mt-2`} onClick={() => sectionSelected(section)}>
                                     {section.content.split("\n").map((line, index) => {
                                         return <div key={index}>{line}</div>;
                                     })}
@@ -61,6 +63,12 @@ export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMark
                                     {section.content}
                                 </div>
                             )}
+                            {section.sectionType === MarkdownSectionType.JudgeComment && (
+                                <div className={`grow mt-3 mb-1`} onClick={() => sectionSelected(section)}>
+                                    <div className="font-bold pb-1">{section.judge}</div>
+                                    <div className="pl-4">{section.content}</div>
+                                </div>
+                            )}
                             {section.sectionType === MarkdownSectionType.ListItem && (
                                 <div className={`pl-4 grow flex flex-row mb-1`} onClick={() => sectionSelected(section)}>
                                     <div className="pr-2">-</div>
@@ -69,7 +77,9 @@ export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMark
                             )}
                             {section.sectionType === MarkdownSectionType.Code && (
                                 <div className={`grow`} onClick={() => sectionSelected(section)}>
-                                    {section.content}
+                                    <SyntaxHighlighter language="javascript" style={dracula} className="text-xs" wrapLines>
+                                        {section.content}
+                                    </SyntaxHighlighter>
                                 </div>
                             )}
                             {section.sectionType === MarkdownSectionType.Link && section.content && (

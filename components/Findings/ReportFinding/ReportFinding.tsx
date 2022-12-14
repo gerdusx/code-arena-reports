@@ -16,7 +16,7 @@ export const ReportFinding = ({ finding, onEditClicked, onDeleteClicked }: IRepo
     const codeString = "(num) => num + 1\ndsfsdfsd";
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col h-[100%]">
             <div className="flex flex-row bg-blue-50">
                 <div className="text-xl text-gray-800 p-4 grow">{finding.name}</div>
                 <div className="my-auto px-4 text-blue-600 hover:cursor-pointer" onClick={() => onEditClicked()}>
@@ -31,7 +31,7 @@ export const ReportFinding = ({ finding, onEditClicked, onDeleteClicked }: IRepo
                 <div className="grow text-center">{finding.wardens?.length} wardens</div>
                 <div>{finding.type}</div>
             </div>
-            <div className="text-gray-600 text-sm p-2">
+            <div className="text-gray-600 text-sm p-2 grow overflow-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-blue-100 scrollbar-track-gray-100 pr-8">
                 <MarkdownViewer sections={finding.descriptionSections} />
             </div>
         </div>

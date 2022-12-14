@@ -24,6 +24,7 @@ const FindingSchema = new mongoose.Schema({
             sectionType: String,
             content: String,
             href: String,
+            judge: String
         },
     ],
 });

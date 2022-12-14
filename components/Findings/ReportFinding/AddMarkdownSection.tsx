@@ -19,6 +19,7 @@ export enum MarkdownSectionType {
     LineBreak = "LineBreak",
     Link = "Link",
     ListItem = "ListItem",
+    JudgeComment = "JudgeComment",
 }
 
 export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps) => {
@@ -33,6 +34,7 @@ export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps)
         { value: MarkdownSectionType.Code, display: MarkdownSectionType.Code },
         { value: MarkdownSectionType.Link, display: MarkdownSectionType.Link },
         { value: MarkdownSectionType.ListItem, display: MarkdownSectionType.ListItem },
+        { value: MarkdownSectionType.JudgeComment, display: MarkdownSectionType.JudgeComment },
     ]);
 
     const [section, setSection] = React.useState<IDescriptionSection>({ sectionType: "", content: "" });
@@ -61,7 +63,10 @@ export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps)
                                 <Input placeHolder="content" value={section.content} changed={(newValue) => setSection({ ...section, content: newValue })} />
                             </div>
                         )}
-                        {(section.sectionType === MarkdownSectionType.Paragraph || section.sectionType === MarkdownSectionType.Div || section.sectionType === MarkdownSectionType.Code) && (
+                        {(section.sectionType === MarkdownSectionType.Paragraph ||
+                            section.sectionType === MarkdownSectionType.Div ||
+                            section.sectionType === MarkdownSectionType.Code ||
+                            section.sectionType === MarkdownSectionType.JudgeComment) && (
                             <div className="mb-2">
                                 <TextArea rows={5} placeHolder="content" value={section.content} changed={(newValue) => setSection({ ...section, content: newValue })} />
                             </div>
@@ -71,13 +76,18 @@ export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps)
                                 <Input placeHolder="href" value={section.href || ""} changed={(newValue) => setSection({ ...section, href: newValue })} />
                             </div>
                         )}
+                        {section.sectionType === MarkdownSectionType.JudgeComment && (
+                            <div className="mb-2">
+                                <Input placeHolder="Judge" value={section.judge || ""} changed={(newValue) => setSection({ ...section, judge: newValue })} />
+                            </div>
+                        )}
                     </div>
                 )}
                 <div className="text-blue-700 hover:cursor-pointer">
                     <span
                         className="pr-4"
                         onClick={() => {
-                            setSection({ sectionType: "", content: "", href: "" });
+                            setSection({ sectionType: "", content: "", href: "", judge: "" });
                             onSectionAdded(section);
                         }}
                     >
@@ -85,7 +95,7 @@ export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps)
                     </span>
                     <span
                         onClick={() => {
-                            setSection({ sectionType: "", content: "", href: "" });
+                            setSection({ sectionType: "", content: "", href: "", judge: "" });
                         }}
                     >
                         Cancel
