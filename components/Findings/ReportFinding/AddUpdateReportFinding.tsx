@@ -9,6 +9,7 @@ import { getContests } from "../../../services/contestService";
 import { IContest } from "../../../interfaces/IContest";
 import { IDescriptionSection, IFinding } from "../../../interfaces/IFinding";
 import { AddMarkdownSection } from "./AddMarkdownSection";
+import { MarkdownViewer } from "./MarkdownViewer";
 
 interface IAddUpdateReportFindingProps {
     selectedFinding?: IFinding;
@@ -24,7 +25,7 @@ export enum FindingType {
 }
 
 export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFinding }: IAddUpdateReportFindingProps) => {
-    const [createFinding, setCreateFinding] = React.useState<CreateFindingRequest>({ name: "", description: "" });
+    const [createFinding, setCreateFinding] = React.useState<CreateFindingRequest>({ name: "", description: "", descriptionSections: [] });
 
     const [contests, setContests] = React.useState<IContest[]>([]);
     const [contestsItems, setContestsItems] = React.useState<SelectItem[]>([]);
@@ -50,6 +51,7 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
                 type: selectedFinding.type,
                 contest: selectedFinding.contest,
                 wardensRaw: selectedFinding.wardensRaw,
+                descriptionSections: selectedFinding.descriptionSections ? selectedFinding.descriptionSections : []
             });
 
             setSelectedType(selectedFinding?.type || "");
@@ -116,7 +118,7 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
 
     const onSectionAdded = (section: IDescriptionSection) => {
         console.log(section);
-        
+        setCreateFinding({ ...createFinding, descriptionSections: [...createFinding.descriptionSections, section] });
     };
 
     return (
@@ -139,6 +141,7 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
             </div>
             <div className="mb-4 grow">
                 <Label text="Description" />
+                <MarkdownViewer sections={createFinding.descriptionSections}/>
                 <AddMarkdownSection onSectionAdded={onSectionAdded} />
                 {/* <Input placeHolder="wardens" value={createFinding.wardensRaw || ""} changed={(newValue) => setCreateFinding({ ...createFinding, wardensRaw: newValue })} /> */}
             </div>

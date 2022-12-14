@@ -19,5 +19,6 @@ export interface IFinding_Contest {
 
 export interface IDescriptionSection {
     sectionType: string;
-    content: string[];
+    content: string;
+    href?: string;
 }

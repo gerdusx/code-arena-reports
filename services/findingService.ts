@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IFinding, IFinding_Contest } from "../interfaces/IFinding";
+import { IDescriptionSection, IFinding, IFinding_Contest } from "../interfaces/IFinding";
 
 export interface CreateFindingRequest {
     name?: string;
@@ -7,6 +7,7 @@ export interface CreateFindingRequest {
     wardensRaw?: string;
     type?: string;
     contest?: IFinding_Contest;
+    descriptionSections: IDescriptionSection[];
 }
 
 export const getFindings = async (): Promise<IFinding[]> => {

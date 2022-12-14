@@ -1,8 +1,13 @@
 import mongoose from "mongoose";
 
-const FindingDescriptionSectionSchema = new mongoose.Schema({
-    sectionType: String,
-}, {id: false});
+const FindingDescriptionSectionSchema = new mongoose.Schema(
+    {
+        sectionType: String,
+        content: String,
+        href: String
+    },
+    { id: false }
+);
 
 const FindingSchema = new mongoose.Schema({
     type: String,
@@ -15,7 +20,13 @@ const FindingSchema = new mongoose.Schema({
         data: String,
         name: String,
     },
-    descriptionSections: [FindingDescriptionSectionSchema],
+    descriptionSections: [
+        {
+            sectionType: String,
+            content: String,
+            href: String,
+        },
+    ],
 });
 
 export const Finding = mongoose.models.Findings || mongoose.model("Findings", FindingSchema);
