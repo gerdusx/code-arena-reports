@@ -12,7 +12,6 @@ const FindingDescriptionSectionSchema = new mongoose.Schema(
 const FindingSchema = new mongoose.Schema({
     type: String,
     name: String,
-    description: String,
     published: Boolean,
     wardensRaw: String,
     wardens: Array,

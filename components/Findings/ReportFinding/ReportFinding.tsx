@@ -8,9 +8,10 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 interface IReportFindingProps {
     finding: IFinding;
     onEditClicked: () => void;
+    onDeleteClicked: () => void;
 }
 
-export const ReportFinding = ({ finding, onEditClicked }: IReportFindingProps) => {
+export const ReportFinding = ({ finding, onEditClicked, onDeleteClicked }: IReportFindingProps) => {
     console.log("finding", finding);
     const codeString = "(num) => num + 1\ndsfsdfsd";
 
@@ -21,6 +22,9 @@ export const ReportFinding = ({ finding, onEditClicked }: IReportFindingProps) =
                 <div className="my-auto px-4 text-blue-600 hover:cursor-pointer" onClick={() => onEditClicked()}>
                     Edit
                 </div>
+                <div className="my-auto px-4 text-red-600 hover:cursor-pointer" onClick={() => onDeleteClicked()}>
+                    Delete
+                </div>
             </div>
             <div className="flex flex-row p-2 border-b-2 text-gray-600 text-sm">
                 <div>{finding.contest?.name}</div>
@@ -29,12 +33,7 @@ export const ReportFinding = ({ finding, onEditClicked }: IReportFindingProps) =
             </div>
             <div className="text-gray-600 text-sm p-2">
                 <div>Description</div>
-                <div className="">
-                    <MarkdownViewer markdown={finding.description} />
-                    {/* <SyntaxHighlighter language="javascript" style={dracula}>
-                        {codeString}
-                    </SyntaxHighlighter> */}
-                </div>
+                <MarkdownViewer sections={finding.descriptionSections} />
             </div>
         </div>
     );

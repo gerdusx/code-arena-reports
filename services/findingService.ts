@@ -21,3 +21,7 @@ export const addFinding = async (findingRequest: CreateFindingRequest): Promise<
 export const updateFinding = async (id: string, findingRequest: CreateFindingRequest): Promise<IFinding> => {
     return (await axios.put(`/api/findings/${id}`, findingRequest)).data;
 };
+
+export const deleteFinding = async (id: string): Promise<IFinding> => {
+    return (await axios.delete(`/api/findings/${id}`)).data;
+};

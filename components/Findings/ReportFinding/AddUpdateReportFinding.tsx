@@ -47,7 +47,6 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
         if (selectedFinding) {
             setCreateFinding({
                 name: selectedFinding.name,
-                description: selectedFinding.description,
                 type: selectedFinding.type,
                 contest: selectedFinding.contest,
                 wardensRaw: selectedFinding.wardensRaw,

@@ -30,7 +30,7 @@ export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps)
         { value: MarkdownSectionType.Code, display: MarkdownSectionType.Code },
         { value: MarkdownSectionType.Link, display: MarkdownSectionType.Link },
     ]);
-    const [selectedType, setSelectedType] = React.useState("");
+
     const [section, setSection] = React.useState<IDescriptionSection>({ sectionType: "", content: "" });
 
     const onTypeChanged = (type: string) => {
@@ -44,14 +44,26 @@ export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps)
                     <div>
                         <Select items={sectionTypes} selectedValue={section.sectionType} onSelectChange={onTypeChanged} />
                     </div>
-                    {section.sectionType && <div>
-                        <Input placeHolder="content" value={section.content} changed={(newValue) => setSection({ ...section, content: newValue })} />
-                    </div>}
+                    {section.sectionType && (
+                        <div>
+                            <Input placeHolder="content" value={section.content} changed={(newValue) => setSection({ ...section, content: newValue })} />
+                        </div>
+                    )}
                     <div className="text-blue-700 hover:cursor-pointer">
-                        <span className="pr-4" onClick={() => onSectionAdded(section)}>
+                        <span
+                            className="pr-4"
+                            onClick={() => {
+                                setInEditMode(false);
+                                setSection({ sectionType: "", content: "" });
+                                onSectionAdded(section);
+                            }}
+                        >
                             Add
                         </span>
-                        <span onClick={() => setInEditMode(false)}>Cancel</span>
+                        <span onClick={() => {
+                            setSection({ sectionType: "", content: "" });
+                            setInEditMode(false);
+                        }}>Cancel</span>
                     </div>
                 </div>
             )}

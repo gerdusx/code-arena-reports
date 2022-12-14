@@ -4,7 +4,7 @@ import { AddUpdateReportFinding } from "../components/Findings/ReportFinding/Add
 import { ReportFinding } from "../components/Findings/ReportFinding/ReportFinding";
 import { IFinding } from "../interfaces/IFinding";
 import { FindingMode } from "../redux/slices/findingsSlice";
-import { getFindings } from "../services/findingService";
+import { deleteFinding, getFindings } from "../services/findingService";
 
 export default function Home() {
     const [findingMode, setFindingMode] = React.useState<FindingMode>(FindingMode.View);
@@ -54,6 +54,12 @@ export default function Home() {
                         onEditClicked={() => {
                             setFindingMode(FindingMode.Edit);
                         }}
+                        onDeleteClicked={async () => {
+                            await deleteFinding(selectedFinding?._id!);
+                            setSelectedFinding(undefined);
+                            setFindingMode(FindingMode.View);
+                            getFilteredFindings();
+                        }}
                     />
                 )}
                 {(findingMode === FindingMode.Add || findingMode === FindingMode.Edit) && (
@@ -65,7 +71,7 @@ export default function Home() {
                             } else {
                                 setFindingMode(FindingMode.View);
                             }
-                            
+
                             getFilteredFindings();
                         }}
                         onCancel={() => {
