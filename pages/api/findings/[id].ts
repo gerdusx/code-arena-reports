@@ -17,7 +17,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         PUT: async (req: NextApiRequest, res: NextApiResponse) => {
             const { Finding } = await connect(); // connect to database
-            res.json(await Finding.findByIdAndUpdate(id, req.body, { new: true }).catch(catcher));
+
+            const wardens = req.body.wardensRaw.split(", ");
+
+            res.json(await Finding.findByIdAndUpdate(id, {...req.body, wardens}, { new: true }).catch(catcher));
         },
 
         DELETE: async (req: NextApiRequest, res: NextApiResponse) => {

@@ -1,0 +1,65 @@
+import React from "react";
+import { IDescriptionSection } from "../../../interfaces/IFinding";
+import { Select, SelectItem } from "../../FormControls/Select";
+
+interface IAddMarkdownSectionProps {
+    onSectionAdded: (section: IDescriptionSection) => void;
+}
+
+enum MarkdownSectionType {
+    Paragraph = "Paragraph",
+    Div = "Div",
+    Heading1 = "Heading1",
+    Heading2 = "Heading2",
+    Heading3 = "Heading3",
+    Code = "Code",
+    LineBreak = "LineBreak",
+    ListOrdered = "ListOrdered",
+    ListUnordered = "ListUnordered",
+    Link = "Link",
+}
+
+export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps) => {
+    const [inEditMode, setInEditMode] = React.useState(false);
+    const [sectionTypes, setSectionTypes] = React.useState<SelectItem[]>([
+        { value: MarkdownSectionType.Paragraph, display: MarkdownSectionType.Paragraph },
+        { value: MarkdownSectionType.Div, display: MarkdownSectionType.Div },
+        { value: MarkdownSectionType.Heading1, display: MarkdownSectionType.Heading1 },
+        { value: MarkdownSectionType.Heading2, display: MarkdownSectionType.Heading2 },
+        { value: MarkdownSectionType.Heading3, display: MarkdownSectionType.Heading3 },
+        { value: MarkdownSectionType.Code, display: MarkdownSectionType.Code },
+        { value: MarkdownSectionType.LineBreak, display: MarkdownSectionType.LineBreak },
+        { value: MarkdownSectionType.Link, display: MarkdownSectionType.Link },
+        { value: MarkdownSectionType.ListOrdered, display: MarkdownSectionType.ListOrdered },
+        { value: MarkdownSectionType.ListUnordered, display: MarkdownSectionType.ListUnordered },
+    ]);
+    const [selectedType, setSelectedType] = React.useState("");
+    const [section, setSection] = React.useState<IDescriptionSection>({ sectionType: "", content: [] });
+
+    const onTypeChanged = (type: string) => {
+        setSection({ ...section, sectionType: type });
+    };
+
+    return (
+        <div className="flex flex-col">
+            {inEditMode && (
+                <div className="flex flex-col">
+                    <div>
+                        <Select items={sectionTypes} selectedValue={section.sectionType} onSelectChange={onTypeChanged} />
+                    </div>
+                    <div className="text-blue-700 hover:cursor-pointer">
+                        <span className="pr-4" onClick={() => onSectionAdded(section)}>
+                            Add
+                        </span>
+                        <span onClick={() => setInEditMode(false)}>Cancel</span>
+                    </div>
+                </div>
+            )}
+            {!inEditMode && (
+                <div className="text-blue-700 hover:cursor-pointer" onClick={() => setInEditMode(true)}>
+                    Add Section
+                </div>
+            )}
+        </div>
+    );
+};

@@ -4,6 +4,7 @@ import { IFinding, IFinding_Contest } from "../interfaces/IFinding";
 export interface CreateFindingRequest {
     name?: string;
     description?: string;
+    wardensRaw?: string;
     type?: string;
     contest?: IFinding_Contest;
 }

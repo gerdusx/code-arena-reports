@@ -24,16 +24,16 @@ export const ReportFinding = ({ finding, onEditClicked }: IReportFindingProps) =
             </div>
             <div className="flex flex-row p-2 border-b-2 text-gray-600 text-sm">
                 <div>{finding.contest?.name}</div>
-                <div className="grow text-center">17 wardens</div>
+                <div className="grow text-center">{finding.wardens?.length} wardens</div>
                 <div>{finding.type}</div>
             </div>
             <div className="text-gray-600 text-sm p-2">
                 <div>Description</div>
                 <div className="">
                     <MarkdownViewer markdown={finding.description} />
-                    <SyntaxHighlighter language="javascript" style={dracula}>
+                    {/* <SyntaxHighlighter language="javascript" style={dracula}>
                         {codeString}
-                    </SyntaxHighlighter>
+                    </SyntaxHighlighter> */}
                 </div>
             </div>
         </div>

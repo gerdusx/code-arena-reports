@@ -7,17 +7,20 @@ import { Label } from "../../FormControls/Label";
 import { Select, SelectItem } from "../../FormControls/Select";
 import { getContests } from "../../../services/contestService";
 import { IContest } from "../../../interfaces/IContest";
-import { IFinding } from "../../../interfaces/IFinding";
+import { IDescriptionSection, IFinding } from "../../../interfaces/IFinding";
+import { AddMarkdownSection } from "./AddMarkdownSection";
 
 interface IAddUpdateReportFindingProps {
     selectedFinding?: IFinding;
-    onFindingChanged: () => void;
+    onFindingChanged: (close: boolean) => void;
     onCancel: () => void;
 }
 
 export enum FindingType {
     High = "High",
     Medium = "Medium",
+    Low = "Low",
+    NonCritical = "Non-Critical",
 }
 
 export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFinding }: IAddUpdateReportFindingProps) => {
@@ -28,6 +31,8 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
     const [typesItems] = React.useState<SelectItem[]>([
         { value: "High", display: "High" },
         { value: "Medium", display: "Medium" },
+        { value: "Low", display: "Low" },
+        { value: "Non-Critical", display: "Non-Critical" },
     ]);
 
     const [selectedType, setSelectedType] = React.useState("");
@@ -44,6 +49,7 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
                 description: selectedFinding.description,
                 type: selectedFinding.type,
                 contest: selectedFinding.contest,
+                wardensRaw: selectedFinding.wardensRaw,
             });
 
             setSelectedType(selectedFinding?.type || "");
@@ -70,15 +76,22 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
         setContests(await getContests());
     };
 
-    const onSave = async () => {
+    const onSave = async (close: boolean) => {
         if (selectedFinding) {
             await updateFinding(selectedFinding._id!, createFinding);
-            
         } else {
             await addFinding(createFinding);
         }
 
-        onFindingChanged();
+        if (!close) {
+            setCreateFinding({
+                ...createFinding,
+                name: "",
+                description: "",
+            });
+        }
+
+        onFindingChanged(close);
     };
 
     const onContestChanged = (contestId: string) => {
@@ -101,8 +114,13 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
         setCreateFinding({ ...createFinding, type });
     };
 
+    const onSectionAdded = (section: IDescriptionSection) => {
+        console.log(section);
+        
+    };
+
     return (
-        <div className="p-4">
+        <div className="flex flex-col p-4 h-[100%]">
             <div className="mb-4">
                 <Label text="Name" />
                 <Input placeHolder="name" value={createFinding.name || ""} changed={(newValue) => setCreateFinding({ ...createFinding, name: newValue })} />
@@ -115,12 +133,22 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
                 <Label text="Contest" />
                 <Select items={contestsItems} selectedValue={selectedContestId} onSelectChange={onContestChanged} />
             </div>
-            <div className="mb-2 h-96">
-                <Label text="Description Markdown" />
-                <TextArea placeHolder="description markdown" value={createFinding.description || ""} changed={(newValue) => setCreateFinding({ ...createFinding, description: newValue })} />
+            <div className="mb-4">
+                <Label text="Wardens" />
+                <Input placeHolder="wardens" value={createFinding.wardensRaw || ""} changed={(newValue) => setCreateFinding({ ...createFinding, wardensRaw: newValue })} />
             </div>
+            <div className="mb-4 grow">
+                <Label text="Description" />
+                <AddMarkdownSection onSectionAdded={onSectionAdded} />
+                {/* <Input placeHolder="wardens" value={createFinding.wardensRaw || ""} changed={(newValue) => setCreateFinding({ ...createFinding, wardensRaw: newValue })} /> */}
+            </div>
+            {/* <div className="mb-2 grow">
+                <Label text="Description Markdown" />
+                <TextArea rows={20} placeHolder="description markdown" value={createFinding.description || ""} changed={(newValue) => setCreateFinding({ ...createFinding, description: newValue })} />
+            </div> */}
             <div className="mb-2">
-                <Button text="Save" clicked={() => onSave()} />
+                <Button text="Save" clicked={() => onSave(false)} />
+                <Button text="Save & Close" clicked={() => onSave(true)} />
                 <Button text="Cancel" clicked={() => onCancel()} />
             </div>
         </div>

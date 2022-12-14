@@ -58,8 +58,14 @@ export default function Home() {
                 )}
                 {(findingMode === FindingMode.Add || findingMode === FindingMode.Edit) && (
                     <AddUpdateReportFinding
-                        onFindingChanged={() => {
-                            setFindingMode(FindingMode.View);
+                        onFindingChanged={(close: boolean) => {
+                            console.log("close", close);
+                            if (!close) {
+                                setFindingMode(FindingMode.Edit);
+                            } else {
+                                setFindingMode(FindingMode.View);
+                            }
+                            
                             getFilteredFindings();
                         }}
                         onCancel={() => {
