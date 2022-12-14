@@ -2,6 +2,7 @@ import React from "react";
 import { IDescriptionSection } from "../../../interfaces/IFinding";
 import { Input } from "../../FormControls/Input";
 import { Select, SelectItem } from "../../FormControls/Select";
+import { TextArea } from "../../FormControls/TextArea";
 
 interface IAddMarkdownSectionProps {
     onSectionAdded: (section: IDescriptionSection) => void;
@@ -16,6 +17,7 @@ export enum MarkdownSectionType {
     Code = "Code",
     LineBreak = "LineBreak",
     Link = "Link",
+    ListItem = "ListItem",
 }
 
 export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps) => {
@@ -29,6 +31,7 @@ export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps)
         { value: MarkdownSectionType.Heading3, display: MarkdownSectionType.Heading3 },
         { value: MarkdownSectionType.Code, display: MarkdownSectionType.Code },
         { value: MarkdownSectionType.Link, display: MarkdownSectionType.Link },
+        { value: MarkdownSectionType.ListItem, display: MarkdownSectionType.ListItem },
     ]);
 
     const [section, setSection] = React.useState<IDescriptionSection>({ sectionType: "", content: "" });
@@ -40,13 +43,31 @@ export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps)
     return (
         <div className="flex flex-col">
             {inEditMode && (
-                <div className="flex flex-col">
-                    <div>
+                <div className="flex flex-col mt-8">
+                    <div className="mb-2">
                         <Select items={sectionTypes} selectedValue={section.sectionType} onSelectChange={onTypeChanged} />
                     </div>
                     {section.sectionType && (
                         <div>
-                            <Input placeHolder="content" value={section.content} changed={(newValue) => setSection({ ...section, content: newValue })} />
+                            {(section.sectionType === MarkdownSectionType.Heading1 ||
+                                section.sectionType === MarkdownSectionType.Heading2 ||
+                                section.sectionType === MarkdownSectionType.Heading3 ||
+                                section.sectionType === MarkdownSectionType.ListItem ||
+                                section.sectionType === MarkdownSectionType.Link) && (
+                                <div className="mb-2">
+                                    <Input placeHolder="content" value={section.content} changed={(newValue) => setSection({ ...section, content: newValue })} />
+                                </div>
+                            )}
+                            {(section.sectionType === MarkdownSectionType.Paragraph || section.sectionType === MarkdownSectionType.Div || section.sectionType === MarkdownSectionType.Code) && (
+                                <div className="mb-2">
+                                    <TextArea rows={5} placeHolder="content" value={section.content} changed={(newValue) => setSection({ ...section, content: newValue })} />
+                                </div>
+                            )}
+                            {section.sectionType === MarkdownSectionType.Link && (
+                                <div className="mb-2">
+                                    <Input placeHolder="href" value={section.href || ""} changed={(newValue) => setSection({ ...section, href: newValue })} />
+                                </div>
+                            )}
                         </div>
                     )}
                     <div className="text-blue-700 hover:cursor-pointer">
@@ -60,15 +81,19 @@ export const AddMarkdownSection = ({ onSectionAdded }: IAddMarkdownSectionProps)
                         >
                             Add
                         </span>
-                        <span onClick={() => {
-                            setSection({ sectionType: "", content: "" });
-                            setInEditMode(false);
-                        }}>Cancel</span>
+                        <span
+                            onClick={() => {
+                                setSection({ sectionType: "", content: "" });
+                                setInEditMode(false);
+                            }}
+                        >
+                            Cancel
+                        </span>
                     </div>
                 </div>
             )}
             {!inEditMode && (
-                <div className="text-blue-700 hover:cursor-pointer" onClick={() => setInEditMode(true)}>
+                <div className="text-blue-700 hover:cursor-pointer pt-2" onClick={() => setInEditMode(true)}>
                     Add Section
                 </div>
             )}

@@ -35,8 +35,10 @@ export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMark
                     return (
                         <div key={index} className={`flex flex-row ${inEditMode && editModeCSS} ${selectedSection?._id?.toString() === section._id?.toString() && selectedSectionCSS}`}>
                             {section.sectionType === MarkdownSectionType.Paragraph && (
-                                <div className={`grow mb-2`} onClick={() => sectionSelected(section)}>
-                                    {section.content}
+                                <div className={`grow mb-4`} onClick={() => sectionSelected(section)}>
+                                    {section.content.split("\n").map((line, index) => {
+                                        return <div key={index}>{line}</div>;
+                                    })}
                                 </div>
                             )}
                             {section.sectionType === MarkdownSectionType.Div && (
@@ -45,18 +47,24 @@ export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMark
                                 </div>
                             )}
                             {section.sectionType === MarkdownSectionType.Heading1 && (
-                                <div className={`grow text-3xl`} onClick={() => sectionSelected(section)}>
+                                <div className={`grow text-2xl mt-3 mb-1`} onClick={() => sectionSelected(section)}>
                                     {section.content}
                                 </div>
                             )}
                             {section.sectionType === MarkdownSectionType.Heading2 && (
-                                <div className={`grow text-2xl`} onClick={() => sectionSelected(section)}>
+                                <div className={`grow text-xl mt-3 mb-1`} onClick={() => sectionSelected(section)}>
                                     {section.content}
                                 </div>
                             )}
                             {section.sectionType === MarkdownSectionType.Heading3 && (
-                                <div className={`grow text-xl`} onClick={() => sectionSelected(section)}>
+                                <div className={`grow text-lg mt-3 mb-1`} onClick={() => sectionSelected(section)}>
                                     {section.content}
+                                </div>
+                            )}
+                            {section.sectionType === MarkdownSectionType.ListItem && (
+                                <div className={`pl-4 grow flex flex-row mb-1`} onClick={() => sectionSelected(section)}>
+                                    <div className="pr-2">-</div>
+                                    <div>{section.content}</div>
                                 </div>
                             )}
                             {section.sectionType === MarkdownSectionType.Code && (
@@ -66,8 +74,8 @@ export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMark
                             )}
                             {section.sectionType === MarkdownSectionType.Link && section.content && (
                                 <div className={`grow`} onClick={() => sectionSelected(section)}>
-                                    <a className="text-blue-700" href={section.content[0]} target="_blank" rel="noopener noreferrer">
-                                        {section.href}
+                                    <a className="text-blue-700" href={section.href} target="_blank" rel="noopener noreferrer">
+                                        {section.content}
                                     </a>
                                 </div>
                             )}
@@ -77,7 +85,7 @@ export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMark
                                 </div>
                             )}
                             {onSectionDeleted && selectedSection?._id?.toString() === section._id?.toString() && (
-                                <div className="text-red-700" onClick={() => onSectionDeleted(section)}>
+                                <div className="text-red-700 px-2 my-auto" onClick={() => onSectionDeleted(section)}>
                                     delete
                                 </div>
                             )}

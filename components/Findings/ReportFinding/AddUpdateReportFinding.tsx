@@ -121,39 +121,45 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
     };
 
     return (
-        <div className="flex flex-col p-4 h-[100%]">
-            <div className="mb-4">
-                <Label text="Name" />
-                <Input placeHolder="name" value={createFinding.name || ""} changed={(newValue) => setCreateFinding({ ...createFinding, name: newValue })} />
+        <div className="flex flex-col h-[100%] pl-4 pb-2">
+            <div className="grow overflow-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-blue-100 scrollbar-track-gray-100 pr-8">
+                <div className="mb-4">
+                    <Label text="Name" />
+                    <Input placeHolder="name" value={createFinding.name || ""} changed={(newValue) => setCreateFinding({ ...createFinding, name: newValue })} />
+                </div>
+                <div className="mb-4">
+                    <Label text="Type" />
+                    <Select items={typesItems} selectedValue={selectedType} onSelectChange={onTypeChanged} />
+                </div>
+                <div className="mb-4">
+                    <Label text="Contest" />
+                    <Select items={contestsItems} selectedValue={selectedContestId} onSelectChange={onContestChanged} />
+                </div>
+                <div className="mb-4">
+                    <Label text="Wardens" />
+                    <Input placeHolder="wardens" value={createFinding.wardensRaw || ""} changed={(newValue) => setCreateFinding({ ...createFinding, wardensRaw: newValue })} />
+                </div>
+                <div className="mb-4 grow">
+                    <Label text="Description" />
+                    <MarkdownViewer
+                        sections={createFinding.descriptionSections}
+                        inEditMode={true}
+                        onSectionDeleted={(section) => {
+                            setCreateFinding({ ...createFinding, descriptionSections: [...createFinding.descriptionSections.filter((x) => x._id?.toString() !== section._id?.toString())] });
+                        }}
+                    />
+                </div>
             </div>
-            <div className="mb-4">
-                <Label text="Type" />
-                <Select items={typesItems} selectedValue={selectedType} onSelectChange={onTypeChanged} />
-            </div>
-            <div className="mb-4">
-                <Label text="Contest" />
-                <Select items={contestsItems} selectedValue={selectedContestId} onSelectChange={onContestChanged} />
-            </div>
-            <div className="mb-4">
-                <Label text="Wardens" />
-                <Input placeHolder="wardens" value={createFinding.wardensRaw || ""} changed={(newValue) => setCreateFinding({ ...createFinding, wardensRaw: newValue })} />
-            </div>
-            <div className="mb-4 grow">
-                <Label text="Description" />
-                <MarkdownViewer sections={createFinding.descriptionSections} inEditMode={true} onSectionDeleted={(section) => {
-                    setCreateFinding({ ...createFinding, descriptionSections: [...createFinding.descriptionSections.filter(x => x._id?.toString() !== section._id?.toString())] });
-                }}/>
-                <AddMarkdownSection onSectionAdded={onSectionAdded} />
-                {/* <Input placeHolder="wardens" value={createFinding.wardensRaw || ""} changed={(newValue) => setCreateFinding({ ...createFinding, wardensRaw: newValue })} /> */}
-            </div>
-            {/* <div className="mb-2 grow">
-                <Label text="Description Markdown" />
-                <TextArea rows={20} placeHolder="description markdown" value={createFinding.description || ""} changed={(newValue) => setCreateFinding({ ...createFinding, description: newValue })} />
-            </div> */}
-            <div className="mb-2">
-                <Button text="Save" clicked={() => onSave(false)} />
-                <Button text="Save & Close" clicked={() => onSave(true)} />
-                <Button text="Cancel" clicked={() => onCancel()} />
+
+            <div className="flex flex-row pt-2 border-t-2">
+                <div>
+                    <AddMarkdownSection onSectionAdded={onSectionAdded} />
+                </div>
+                <div className="text-right grow">
+                    <Button text="Save" clicked={() => onSave(false)} />
+                    <Button text="Save & Close" clicked={() => onSave(true)} />
+                    <Button text="Cancel" clicked={() => onCancel()} />
+                </div>
             </div>
         </div>
     );

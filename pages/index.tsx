@@ -47,7 +47,7 @@ export default function Home() {
                     selectedFinding={selectedFinding}
                 />
             </div>
-            <div className="w-full shadow-md">
+            <div className="w-full shadow-md h-[100%]">
                 {findingMode === FindingMode.View && selectedFinding && (
                     <ReportFinding
                         finding={selectedFinding}
