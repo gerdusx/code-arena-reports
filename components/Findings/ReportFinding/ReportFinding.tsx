@@ -32,7 +32,6 @@ export const ReportFinding = ({ finding, onEditClicked, onDeleteClicked }: IRepo
                 <div>{finding.type}</div>
             </div>
             <div className="text-gray-600 text-sm p-2">
-                <div>Description</div>
                 <MarkdownViewer sections={finding.descriptionSections} />
             </div>
         </div>

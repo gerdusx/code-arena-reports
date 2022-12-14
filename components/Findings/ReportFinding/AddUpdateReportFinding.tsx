@@ -139,8 +139,7 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
                     <Label text="Wardens" />
                     <Input placeHolder="wardens" value={createFinding.wardensRaw || ""} changed={(newValue) => setCreateFinding({ ...createFinding, wardensRaw: newValue })} />
                 </div>
-                <div className="mb-4 grow">
-                    <Label text="Description" />
+                <div className="mb-4 grow text-gray-600 text-sm">
                     <MarkdownViewer
                         sections={createFinding.descriptionSections}
                         inEditMode={true}
@@ -149,12 +148,13 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
                         }}
                     />
                 </div>
-            </div>
-
-            <div className="flex flex-row pt-2 border-t-2">
                 <div>
                     <AddMarkdownSection onSectionAdded={onSectionAdded} />
                 </div>
+            </div>
+
+            <div className="flex flex-row pt-2 border-t-2">
+                <div></div>
                 <div className="text-right grow">
                     <Button text="Save" clicked={() => onSave(false)} />
                     <Button text="Save & Close" clicked={() => onSave(true)} />

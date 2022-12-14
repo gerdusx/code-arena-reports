@@ -35,7 +35,7 @@ export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMark
                     return (
                         <div key={index} className={`flex flex-row ${inEditMode && editModeCSS} ${selectedSection?._id?.toString() === section._id?.toString() && selectedSectionCSS}`}>
                             {section.sectionType === MarkdownSectionType.Paragraph && (
-                                <div className={`grow mb-4`} onClick={() => sectionSelected(section)}>
+                                <div className={`grow mb-4 mt-4`} onClick={() => sectionSelected(section)}>
                                     {section.content.split("\n").map((line, index) => {
                                         return <div key={index}>{line}</div>;
                                     })}
