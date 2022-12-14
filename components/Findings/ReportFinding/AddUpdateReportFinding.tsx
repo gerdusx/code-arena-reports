@@ -140,7 +140,9 @@ export const AddUpdateReportFinding = ({ onFindingChanged, onCancel, selectedFin
             </div>
             <div className="mb-4 grow">
                 <Label text="Description" />
-                <MarkdownViewer sections={createFinding.descriptionSections}/>
+                <MarkdownViewer sections={createFinding.descriptionSections} inEditMode={true} onSectionDeleted={(section) => {
+                    setCreateFinding({ ...createFinding, descriptionSections: [...createFinding.descriptionSections.filter(x => x._id?.toString() !== section._id?.toString())] });
+                }}/>
                 <AddMarkdownSection onSectionAdded={onSectionAdded} />
                 {/* <Input placeHolder="wardens" value={createFinding.wardensRaw || ""} changed={(newValue) => setCreateFinding({ ...createFinding, wardensRaw: newValue })} /> */}
             </div>

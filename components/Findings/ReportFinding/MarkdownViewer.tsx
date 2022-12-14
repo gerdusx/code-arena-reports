@@ -5,6 +5,8 @@ import findingsSlice from "../../../redux/slices/findingsSlice";
 import { MarkdownSectionType } from "./AddMarkdownSection";
 interface IMarkdownViewerProps {
     sections?: IDescriptionSection[];
+    inEditMode?: boolean;
+    onSectionDeleted?: (section: IDescriptionSection) => void;
 }
 
 interface MarkdownSection {
@@ -13,34 +15,78 @@ interface MarkdownSection {
     href?: string;
 }
 
-export const MarkdownViewer = ({ sections }: IMarkdownViewerProps) => {
+export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMarkdownViewerProps) => {
+    const [selectedSection, setSelectedSection] = React.useState<IDescriptionSection>();
+    const editModeCSS = "hover:cursor-pointer hover:bg-blue-50";
+    const selectedSectionCSS = "bg-blue-100";
+
+    const sectionSelected = (section: IDescriptionSection) => {
+        if (section._id?.toString() === selectedSection?._id?.toString()) {
+            setSelectedSection(undefined);
+        } else {
+            setSelectedSection(section);
+        }
+    };
 
     return (
         <div className="flex flex-col">
-            {sections && sections.map((section, index) => {
-                return (
-                    <div key={index}>
-                        {section.sectionType === MarkdownSectionType.Paragraph && <div className="mb-2">{section.content}</div>}
-                        {section.sectionType === MarkdownSectionType.Div && <div>{section.content}</div>}
-                        {section.sectionType === MarkdownSectionType.Heading1 && <div className="text-3xl">{section.content}</div>}
-                        {section.sectionType === MarkdownSectionType.Heading2 && <div className="text-2xl">{section.content}</div>}
-                        {section.sectionType === MarkdownSectionType.Heading3 && <div className="text-xl">{section.content}</div>}
-                        {section.sectionType === MarkdownSectionType.Code && <div>{section.content}</div>}
-                        {section.sectionType === MarkdownSectionType.Link && section.content && (
-                            <div className="">
-                                <a className="text-blue-700" href={section.content[0]} target="_blank" rel="noopener noreferrer">
-                                    {section.href}
-                                </a>
-                            </div>
-                        )}
-                        {section.sectionType === MarkdownSectionType.LineBreak && <br />}
-
-                        {/* {section.type === MarkdownSectionType.Heading1 && <div className="text-3xl">{section.content}</div>}
+            {sections &&
+                sections.map((section, index) => {
+                    return (
+                        <div key={index} className={`flex flex-row ${inEditMode && editModeCSS} ${selectedSection?._id?.toString() === section._id?.toString() && selectedSectionCSS}`}>
+                            {section.sectionType === MarkdownSectionType.Paragraph && (
+                                <div className={`grow mb-2`} onClick={() => sectionSelected(section)}>
+                                    {section.content}
+                                </div>
+                            )}
+                            {section.sectionType === MarkdownSectionType.Div && (
+                                <div className={`grow`} onClick={() => sectionSelected(section)}>
+                                    {section.content}
+                                </div>
+                            )}
+                            {section.sectionType === MarkdownSectionType.Heading1 && (
+                                <div className={`grow text-3xl`} onClick={() => sectionSelected(section)}>
+                                    {section.content}
+                                </div>
+                            )}
+                            {section.sectionType === MarkdownSectionType.Heading2 && (
+                                <div className={`grow text-2xl`} onClick={() => sectionSelected(section)}>
+                                    {section.content}
+                                </div>
+                            )}
+                            {section.sectionType === MarkdownSectionType.Heading3 && (
+                                <div className={`grow text-xl`} onClick={() => sectionSelected(section)}>
+                                    {section.content}
+                                </div>
+                            )}
+                            {section.sectionType === MarkdownSectionType.Code && (
+                                <div className={`grow`} onClick={() => sectionSelected(section)}>
+                                    {section.content}
+                                </div>
+                            )}
+                            {section.sectionType === MarkdownSectionType.Link && section.content && (
+                                <div className={`grow`} onClick={() => sectionSelected(section)}>
+                                    <a className="text-blue-700" href={section.content[0]} target="_blank" rel="noopener noreferrer">
+                                        {section.href}
+                                    </a>
+                                </div>
+                            )}
+                            {section.sectionType === MarkdownSectionType.LineBreak && (
+                                <div className={`grow`} onClick={() => sectionSelected(section)}>
+                                    <br />
+                                </div>
+                            )}
+                            {onSectionDeleted && selectedSection?._id?.toString() === section._id?.toString() && (
+                                <div className="text-red-700" onClick={() => onSectionDeleted(section)}>
+                                    delete
+                                </div>
+                            )}
+                            {/* {section.type === MarkdownSectionType.Heading1 && <div className="text-3xl">{section.content}</div>}
                         {section.type === MarkdownSectionType.Heading2 && <div className="text-2xl">{section.content}</div>}
                         {section.type === MarkdownSectionType.Heading3 && <div className="text-xl">{section.content}</div>} */}
-                    </div>
-                );
-            })}
+                        </div>
+                    );
+                })}
         </div>
     );
 };
