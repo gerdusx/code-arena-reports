@@ -15,6 +15,7 @@ const FindingSchema = new mongoose.Schema({
     published: Boolean,
     wardensRaw: String,
     wardens: Array,
+    search: Array,
     contest: {
         data: String,
         name: String,

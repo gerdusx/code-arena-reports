@@ -66,7 +66,11 @@ export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMark
                             {section.sectionType === MarkdownSectionType.JudgeComment && (
                                 <div className={`grow mt-3 mb-1`} onClick={() => sectionSelected(section)}>
                                     <div className="font-bold pb-1">{section.judge}</div>
-                                    <div className="pl-4">{section.content}</div>
+                                    <div className="pl-4">
+                                        {section.content.split("\n").map((line, index) => {
+                                            return <div key={index}>{line}</div>;
+                                        })}
+                                    </div>
                                 </div>
                             )}
                             {section.sectionType === MarkdownSectionType.ListItem && (

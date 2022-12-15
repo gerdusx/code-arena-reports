@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../../utils/connection";
+import { generateSearchArray } from "../../../utils/helpers";
 import { ResponseFuncs } from "../../../utils/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,7 +24,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 wardens = req.body.wardensRaw.split(", ");
             }
 
-            res.json(await Finding.findByIdAndUpdate(id, {...req.body, wardens}, { new: true }).catch(catcher));
+            let searchArray: string[] = [];
+
+            if (req.body.descriptionSections) {
+                req.body.descriptionSections.map((section: any) => {
+                    let results = generateSearchArray(section.content);
+                    searchArray = searchArray.concat(results);
+                });
+            }
+
+            searchArray = searchArray.filter((item, index) => searchArray.indexOf(item) === index);
+
+            res.json(await Finding.findByIdAndUpdate(id, { ...req.body, wardens, search: searchArray }, { new: true }).catch(catcher));
         },
 
         DELETE: async (req: NextApiRequest, res: NextApiResponse) => {
