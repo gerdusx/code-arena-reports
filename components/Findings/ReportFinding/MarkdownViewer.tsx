@@ -76,7 +76,7 @@ export const MarkdownViewer = ({ sections, inEditMode, onSectionDeleted }: IMark
                                 </div>
                             )}
                             {section.sectionType === MarkdownSectionType.Code && (
-                                <div className={`grow`} onClick={() => sectionSelected(section)}>
+                                <div className={`grow mb-2`} onClick={() => sectionSelected(section)}>
                                     <SyntaxHighlighter language="javascript" style={dracula} className="text-xs" wrapLines>
                                         {section.content}
                                     </SyntaxHighlighter>
